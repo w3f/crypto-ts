@@ -1,9 +1,8 @@
-import Keyring from '@polkadot/keyring'; //.default
+import Keyring from '@polkadot/keyring';
 import { mnemonicGenerate, mnemonicToSeed, mnemonicValidate } from '@polkadot/util-crypto';
 import process from 'process';
-import u8aToHex from '@polkadot/util/u8a/toHex'; //default
-import waitReady from '@polkadot/wasm-crypto';
-
+import u8aToHex from '@polkadot/util/u8a/toHex';
+import { waitReady } from '@polkadot/wasm-crypto';
 
 
 module.exports = {
@@ -62,7 +61,7 @@ function  generateSeed() {
   const seedU8a = mnemonicToSeed(mnemonic);
   const seed = u8aToHex(seedU8a);
 
-  return { seed, seedU8a, mnemonic};
+  return { seed, seedU8a, mnemonic };
 }
 
 function generateValidMnemonic() {
