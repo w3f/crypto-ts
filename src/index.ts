@@ -5,28 +5,33 @@ import { u8aToHex } from '@polkadot/util';
 import { waitReady } from '@polkadot/wasm-crypto';
 
 
-module.exports = {
-  sessionTypes: () => {
-    return [
+export class Crypto {
+  nodes: []; // TODO: need clarification
+  environment: ""; // TODO: need clarification
+  sessionTypes = [
       'session_grandpa',
       'session_babe',
       'session_imonline',
       'session_parachain',
       'session_audi'
     ];
-  },
-  keyTypes: () => {
-    return [
+  keyTypes = [
       'stash',
       'controller'
-    ].concat(module.exports.sessionTypes());
-  },
-  create: async (nodes, environment=false) => {
+    ].concat(this.sessionTypes);
+
+  result = {};
+
+  constructor(nodes: [], environment: string){
+    this.result = this.create(nodes, environment);
+  }
+
+  async create(nodes, environment){
     if (environment) {
-      return environmentKeys(nodes);
+      return this.environmentKeys(nodes);
     }
     const output = {};
-    const keyTypes = module.exports.keyTypes();
+    const keyTypes = this.keyTypes;
     keyTypes.forEach((type) => {
       output[type] = [];
     });
@@ -37,7 +42,7 @@ module.exports = {
 
     for (let counter = 0; counter < nodes; counter++) {
       keyTypes.forEach((type) => {
-        const { seedU8a, seed, mnemonic } = generateSeed();
+        const { seedU8a, seed, mnemonic } = this.generateSeed();
 
         let keyring;
         if (type === 'session_grandpa') {
@@ -52,53 +57,56 @@ module.exports = {
       });
     }
     return output;
-  },
-}
+  }
 
-function  generateSeed() {
-  const mnemonic = generateValidMnemonic();
+  generateSeed() {
+    const mnemonic = this.generateValidMnemonic();
 
-  const seedU8a = mnemonicToSeed(mnemonic);
-  const seed = u8aToHex(seedU8a);
+    const seedU8a = mnemonicToSeed(mnemonic);
+    const seed = u8aToHex(seedU8a);
 
-  return { seed, seedU8a, mnemonic };
-}
+    return { seed, seedU8a, mnemonic };
+  }
 
-function generateValidMnemonic() {
-  const maxCount = 3;
-  let count = 0;
-  let isValidMnemonic = false;
-  let mnemonic;
+  generateValidMnemonic() {
+    const maxCount = 3;
+    let count = 0;
+    let isValidMnemonic = false;
+    let mnemonic;
 
-  while (!isValidMnemonic) {
-    if (count > maxCount) {
-      throw new Error('could not generate valid mnemonic!');
+    while (!isValidMnemonic) {
+      if (count > maxCount) {
+        throw new Error('could not generate valid mnemonic!');
+      }
+      mnemonic = mnemonicGenerate();
+      isValidMnemonic = mnemonicValidate(mnemonic);
+      count++;
     }
-    mnemonic = mnemonicGenerate();
-    isValidMnemonic = mnemonicValidate(mnemonic);
-    count++;
+    return mnemonic;
   }
-  return mnemonic;
-}
 
-function environmentKeys(nodes) {
-  const output = {};
-  const keyTypes = module.exports.keyTypes();
-  keyTypes.forEach((type) => {
-    output[type] = [];
-  });
-
-  for (let counter = 0; counter < nodes; counter++) {
-
-    const envVarPrefix = `POLKADOT_DEPLOYER_KEYS_${counter}`;
+  environmentKeys(nodes) {
+    const output = {};
+    const keyTypes = this.keyTypes;
     keyTypes.forEach((type) => {
-      const prefix = `${envVarPrefix}_${type.toUpperCase()}`;
-
-      const address = process.env[`${prefix}_ADDRESS`];
-      const seed = process.env[`${prefix}_SEED`];
-
-      output[type].push({ address, seed });
+      output[type] = [];
     });
+
+    for (let counter = 0; counter < nodes; counter++) {
+
+      const envVarPrefix = `POLKADOT_DEPLOYER_KEYS_${counter}`;
+      keyTypes.forEach((type) => {
+        const prefix = `${envVarPrefix}_${type.toUpperCase()}`;
+
+        const address = process.env[`${prefix}_ADDRESS`];
+        const seed = process.env[`${prefix}_SEED`];
+
+        output[type].push({ address, seed });
+      });
+    }
+    return output;
   }
-  return output;
+
 }
+
+const test = new Crypto();
