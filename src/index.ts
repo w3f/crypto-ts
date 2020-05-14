@@ -1,7 +1,7 @@
 import Keyring from '@polkadot/keyring';
 import { mnemonicGenerate, mnemonicToSeed, mnemonicValidate } from '@polkadot/util-crypto';
 import process from 'process';
-import u8aToHex from '@polkadot/util/u8a/toHex';
+import u8aToHex from '@polkadot/util';
 import { waitReady } from '@polkadot/wasm-crypto';
 
 
