@@ -6,8 +6,8 @@ import { waitReady } from '@polkadot/wasm-crypto';
 
 
 export class Crypto {
-  nodes: []; // TODO: need clarification
-  environment: ""; // TODO: need clarification
+  nodes: number = 1; // TODO: need clarification
+  environment: string = ""; // TODO: need clarification
   sessionTypes = [
       'session_grandpa',
       'session_babe',
@@ -22,11 +22,11 @@ export class Crypto {
 
   result = {};
 
-  constructor(nodes: [], environment: string){
+  constructor(nodes: number, environment: string){
     this.result = this.create(nodes, environment);
   }
 
-  async create(nodes, environment){
+  async create(nodes: number, environment: string){
     if (environment) {
       return this.environmentKeys(nodes);
     }
@@ -44,7 +44,7 @@ export class Crypto {
       keyTypes.forEach((type) => {
         const { seedU8a, seed, mnemonic } = this.generateSeed();
 
-        let keyring;
+        let keyring: Keyring;
         if (type === 'session_grandpa') {
           keyring = keyringEd;
         } else {
