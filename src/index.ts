@@ -6,8 +6,6 @@ import { waitReady } from '@polkadot/wasm-crypto';
 
 
 export class Crypto {
-  nodes: number = 1; // TODO: need clarification
-  environment: string = ""; // TODO: need clarification
   sessionTypes = [
       'session_grandpa',
       'session_babe',
@@ -72,7 +70,7 @@ export class Crypto {
     const maxCount = 3;
     let count = 0;
     let isValidMnemonic = false;
-    let mnemonic;
+    let mnemonic: string;
 
     while (!isValidMnemonic) {
       if (count > maxCount) {
@@ -85,7 +83,7 @@ export class Crypto {
     return mnemonic;
   }
 
-  environmentKeys(nodes) {
+  environmentKeys(nodes: number) {
     const output = {};
     const keyTypes = this.keyTypes;
     keyTypes.forEach((type) => {
@@ -108,5 +106,3 @@ export class Crypto {
   }
 
 }
-
-const test = new Crypto();
