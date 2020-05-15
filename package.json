@@ -1,6 +1,6 @@
 {
   "name": "@w3f/crypto",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Crypto functionality",
   "main": "./dist/index.ts",
   "repository": "git@github.com:w3f/crypto-ts.git",
