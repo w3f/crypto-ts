@@ -4,7 +4,7 @@
   "description": "Crypto functionality",
   "main": "./dist/index.ts",
   "repository": "git@github.com:w3f/crypto-ts.git",
-  "author": "Web3 Foundation",
+  "author": "W3F Infrastructure Team <devops@web3.foundation>",
   "license": "Apache-2.0",
   "scripts": {
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
