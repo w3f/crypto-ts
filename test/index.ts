@@ -10,8 +10,9 @@ describe('crypto', () => {
       // Testing result format.
       const nodes = 5;
       const c = new Crypto(nodes);
+
       const result = await c.createKeys();
-      Object.keys(result).length.should.eq(7);
+      Object.keys(result).length.should.eq(c.keyTypes.length);
       const stash = result['stash'];
       stash[0].should.have.property('address').and.to.be.a('string');
       stash[0].should.have.property('seed').and.to.be.a('string');
