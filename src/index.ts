@@ -4,23 +4,25 @@ import { u8aToHex } from '@polkadot/util';
 import { waitReady } from '@polkadot/wasm-crypto';
 
 export class Crypto {
-  sessionTypes = [
+
+  static sessionTypes = [
       'session_grandpa',
       'session_babe',
       'session_imonline',
       'session_parachain',
       'session_audi'
     ];
-  keyTypes = [
+  static keyTypes = [
       'stash',
       'controller'
-    ].concat(this.sessionTypes);
+    ].concat(Crypto.sessionTypes);
+
 
   constructor(private readonly nodes: number){}
 
   async createKeys(){
     const output = {};
-    const keyTypes = this.keyTypes;
+    const keyTypes = Crypto.keyTypes;
     keyTypes.forEach((type) => {
       output[type] = [];
     });
@@ -50,7 +52,7 @@ export class Crypto {
 
   environmentKeys(prefix = 'POLKADOT_DEPLOYER_KEYS'): object {
     const output = {};
-    const keyTypes = this.keyTypes;
+    const keyTypes = Crypto.keyTypes;
     keyTypes.forEach((type) => {
       output[type] = [];
     });
@@ -95,4 +97,5 @@ export class Crypto {
     }
     return mnemonic;
   }
+
 }
