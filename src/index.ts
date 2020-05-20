@@ -20,7 +20,7 @@ export class Crypto {
 
   constructor(private readonly nodes: number){}
 
-  async createKeys(){
+  async createKeys(): Promise<object> {
     const output = {};
     const keyTypes = Crypto.keyTypes;
     keyTypes.forEach((type) => {
@@ -72,7 +72,7 @@ export class Crypto {
     return output;
   }
 
-  private generateSeed() {
+  private generateSeed(): { seed: string; seedU8a: Uint8Array; mnemonic: string } {
     const mnemonic = this.generateValidMnemonic();
 
     const seedU8a = mnemonicToSeed(mnemonic);
