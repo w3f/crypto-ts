@@ -59,7 +59,7 @@ export class Crypto {
 
     for (let counter = 0; counter < this.nodes; counter++) {
 
-      const envVarPrefix = `${prefix}_${counter}`; // todo: prefix as var
+      const envVarPrefix = `${prefix}_${counter}`;
       keyTypes.forEach((type) => {
         const prefix = `${envVarPrefix}_${type.toUpperCase()}`;
 
