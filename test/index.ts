@@ -1,7 +1,8 @@
 import { should } from 'chai';
 import Keyring from "@polkadot/keyring";
 
-import { Crypto } from '../src/';
+import { Crypto } from '../src/crypto';
+import { KeyTypes } from '../src/types';
 
 should();
 
@@ -13,21 +14,21 @@ describe('crypto', () => {
         const c = new Crypto(nodes);
         const result = await c.createKeys();
 
-        Object.keys(result).length.should.eq(Crypto.keyTypes.length);
-        const stash = result['stash'];
+        //Object.keys(result).length.should.eq(KeyTypes.length);
+        const stash = result[KeyTypes.Stash];
         stash[0].should.have.property('address').and.to.be.a('string');
         stash[0].should.have.property('seed').and.to.be.a('string');
         stash[0].should.have.property('mnemonic').and.to.be.a('string');
         Object.keys(stash).length.should.eq(nodes);
-        const controller = result['controller'];
+        const controller = result[KeyTypes.Controller];
         Object.keys(controller).length.should.eq(nodes);
-        const sessionGrandpa = result['session_grandpa'];
+        const sessionGrandpa = result[KeyTypes.Grandpa];
         Object.keys(sessionGrandpa).length.should.eq(nodes);
-        const sessionBabe = result['session_babe'];
+        const sessionBabe = result[KeyTypes.Babe];
         Object.keys(sessionBabe).length.should.eq(nodes);
-        const sessionImOnline = result['session_imonline'];
+        const sessionImOnline = result[KeyTypes.Imonline];
         Object.keys(sessionImOnline).length.should.eq(nodes);
-        const sessionAudi = result['session_audi'];
+        const sessionAudi = result[KeyTypes.Audi];
         Object.keys(sessionAudi).length.should.eq(nodes);
     });
 
@@ -40,7 +41,7 @@ describe('crypto', () => {
         const c = new Crypto(nodes);
         const result = await c.createKeys();
 
-        const sessionGrandpa = result['session_grandpa'][0];
+        const sessionGrandpa = result[KeyTypes.Grandpa][0];
         const sessionGrandpaAccount = keyring.createFromUri(sessionGrandpa.seed);
         sessionGrandpaAccount.address.should.eq(sessionGrandpa.address);
     });
@@ -54,19 +55,19 @@ describe('crypto', () => {
         const c = new Crypto(nodes);
         const result = await c.createKeys();
 
-        const controller = result['controller'][0];
+        const controller = result[KeyTypes.Controller][0];
         const controllerAccount = keyring.createFromUri(controller.seed);
         controllerAccount.address.should.eq(controller.address);
 
-        const sessionBabe = result['session_babe'][0];
+        const sessionBabe = result[KeyTypes.Babe][0];
         const sessionBabeAccount = keyring.createFromUri(sessionBabe.seed);
         sessionBabeAccount.address.should.eq(sessionBabe.address);
 
-        const sessionImOnline = result['session_imonline'][0];
+        const sessionImOnline = result[KeyTypes.Imonline][0];
         const sessionImOnlineAccount = keyring.createFromUri(sessionImOnline.seed);
         sessionImOnlineAccount.address.should.eq(sessionImOnline.address);
 
-        const sessionAudi = result['session_audi'][0];
+        const sessionAudi = result[KeyTypes.Audi][0];
         const sessionAudiAccount = keyring.createFromUri(sessionAudi.seed);
         sessionAudiAccount.address.should.eq(sessionAudi.address);
     });
